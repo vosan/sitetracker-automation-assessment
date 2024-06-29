@@ -7,21 +7,6 @@ const formatDate = (date) => {
     return new Date(date).toLocaleDateString('en-US', options);
 };
 
-// Function to scroll a container and load all leads
-async function loadAllLeads(page, containerSelector, rowSelector) {
-    let previousCount = 0;
-    let currentCount = await page.locator(rowSelector).count();
-
-    while (currentCount > previousCount) {
-        previousCount = currentCount;
-        await page.locator(containerSelector).evaluate(container => {
-            container.scrollBy(0, container.scrollHeight); // Scroll vertically
-        });
-        await page.waitForTimeout(1000); // Adjust the timeout as necessary
-        currentCount = await page.locator(rowSelector).count();
-    }
-}
-
 async function getDescriptionForTask(page, taskTitle) {
     return await page.evaluate((taskTitle) => {
         const taskElements = document.querySelectorAll('li.Task');
