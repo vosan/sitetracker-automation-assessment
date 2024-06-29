@@ -48,35 +48,35 @@ async function clickShowMoreUntilHidden(page) {
 test('Salesforce Login and Task Automation', async ({page}) => {
     // Step 1: Login to Salesforce
     await page.goto('https://sitetracker-1a-dev-ed.develop.my.salesforce.com');
-    await page.fill('input[name="username"]', 'qa-auto@sitetracker.com');
-    await page.fill('input[name="pw"]', 'Test123$');
-    await page.click('input[name="Login"]');
+    await page.fill('input[name="username"]', 'qa-auto@sitetracker.com'); // Enter login
+    await page.fill('input[name="pw"]', 'Test123$'); // Enter password
+    await page.click('input[name="Login"]'); // Click Login button
 
     // Step 2: Navigate to Home Page
     await page.waitForNavigation();
-    await expect(page).toHaveTitle(/Home/);
+    await expect(page).toHaveTitle(/Home/); // Verify the home page is open
 
     // Step 3: Open the Apps menu and navigate to 'Leads'
-    await page.click('button.slds-show');
-    await page.fill('input.slds-input[type="search"]', "leads");
-    await page.click('a[data-label="Leads"]');
+    await page.click('button.slds-show'); // Click the menu button (9-dot icon in the upper left corner)
+    await page.fill('input.slds-input[type="search"]', "leads"); // Search for "leads'
+    await page.click('a[data-label="Leads"]'); // Tap "Leads" in the search results
 
     // Step 4: Ensure 'My Leads' view and apply filter
-    await expect(page).toHaveTitle(/Lead/);
-    await page.click('button[title="Show filters"]');
-    await page.click('div#LeadfilterPanelDateCriterion');
-    await page.locator('div.slds-dropdown-trigger input').nth(0).fill('Jan 1, 2024');
-    await page.locator('div.slds-dropdown-trigger input').nth(1).fill(formatDate(new Date())); // Today's date
-    await page.click('button.doneButton');
-    await page.click('button[title="Close Filters"]');
+    await expect(page).toHaveTitle(/Lead/); // Verify the Lead page is open
+    await page.click('button[title="Show filters"]'); // Tap the Show Filters button (3-line icon in the upper right corner)
+    await page.click('div#LeadfilterPanelDateCriterion'); // Click the Date Creation panel
+    await page.locator('div.slds-dropdown-trigger input').nth(0).fill('Jan 1, 2024'); // Set the Start Date to Jan 1st 2024
+    await page.locator('div.slds-dropdown-trigger input').nth(1).fill(formatDate(new Date())); // Set the End Date to today's date
+    await page.click('button.doneButton'); // Tap Done button
+    await page.click('button[title="Close Filters"]'); // Close the Filters modal
     // Verify the count of leads
-    const itemsCountText = await page.locator('span.countSortedByFilteredBy').textContent();
-    expect(itemsCountText).toContain('22 items');
+    const itemsCountText = await page.locator('span.countSortedByFilteredBy').textContent(); // Get the items/leads count number
+    expect(itemsCountText).toContain('22 items'); // Verify the count is 22
 
     // Step 5: Interact with a specific lead and create tasks
-    await page.click('a[title="Betty Bair"]');
-    const actualLeadName = await page.locator('lightning-formatted-name').innerText();
-    expect(actualLeadName).toContain('Betty Bair');
+    await page.click('a[title="Betty Bair"]'); // Click on Betty Bair from the results list
+    const actualLeadName = await page.locator('lightning-formatted-name').innerText(); // Get lead's name from the page
+    expect(actualLeadName).toContain('Betty Bair'); // Verify the name is Betty Bair
 
     await page.click('a[data-tab-value="activityTab"]'); // Tap "Activity" tab
 
